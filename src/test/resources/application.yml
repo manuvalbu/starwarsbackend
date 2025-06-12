@@ -3,3 +3,5 @@ swapi:
   endpoints:
     people: /people/
     planets: /planets/
+cache:
+  cron: 0 0 * * * *
