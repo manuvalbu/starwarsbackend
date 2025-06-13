@@ -1,10 +1,9 @@
-package com.mercedes.benz.infrastructure.out;
+package com.mercedes.benz.infrastructure.adapter.out;
 
 import com.mercedes.benz.domain.model.Person;
 import com.mercedes.benz.domain.model.Planet;
 import com.mercedes.benz.domain.vo.PageRequest;
 import com.mercedes.benz.domain.vo.Query;
-import com.mercedes.benz.infrastructure.adapter.out.SwapiCacheAdapter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

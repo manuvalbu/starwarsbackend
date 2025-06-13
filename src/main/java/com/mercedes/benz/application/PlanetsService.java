@@ -4,8 +4,10 @@ import com.mercedes.benz.domain.model.Planet;
 import com.mercedes.benz.domain.port.in.PlanetsQueryUseCase;
 import com.mercedes.benz.domain.port.out.PlanetsDataSource;
 import com.mercedes.benz.domain.vo.Query;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Service
 public class PlanetsService implements PlanetsQueryUseCase {
     private final PlanetsDataSource planetsDataSource;
 
