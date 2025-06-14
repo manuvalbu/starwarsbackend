@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @RestController
-@RequestMapping("/api/swapi")
+@RequestMapping("${rest.base-url}")
 @Validated
 @Tag(name = "Swapi API", description = "Operations related to Star Wars People and Planets")
 public class SwapiController {
@@ -35,7 +35,7 @@ public class SwapiController {
         this.planetsService = planetsService;
     }
 
-    @GetMapping("/people")
+    @GetMapping("${rest.endpoints.people}")
     public ResponseEntity<List<Person>> getPeople(
             @RequestParam(required = false)
             @Parameter(description = "Field to filter by") String filterField,
@@ -75,7 +75,7 @@ public class SwapiController {
         return ResponseEntity.ok(peopleService.execute(query));
     }
 
-    @GetMapping("/planets")
+    @GetMapping("${rest.endpoints.planets}")
     public ResponseEntity<List<Planet>> getPlanets(
             @RequestParam(required = false)
             @Parameter(description = "Field to filter by") String filterField,

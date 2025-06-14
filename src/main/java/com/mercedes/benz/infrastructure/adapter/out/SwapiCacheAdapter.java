@@ -14,11 +14,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class SwapiCacheAdapter implements PeopleDataSource, PlanetsDataSource {
     private final RestTemplate restTemplate;
     private final SwapiProperties swapiProperties;
+    private final AtomicInteger executionCount = new AtomicInteger(0);
 
     public SwapiCacheAdapter(RestTemplate restTemplate, SwapiProperties swapiProperties) {
         this.restTemplate = restTemplate;
@@ -36,9 +38,14 @@ public class SwapiCacheAdapter implements PeopleDataSource, PlanetsDataSource {
         return planets;
     }
 
+    public int getExecutionCount() {
+        return executionCount.get();
+    }
+
     @PostConstruct
     @Scheduled(cron = "${cache.cron}")
     public void loadDataFromSwapi() {
+        executionCount.incrementAndGet();
         String peopleUrl = swapiProperties.baseUrl() + swapiProperties.endpoints().people();
         String planetsUrl = swapiProperties.baseUrl() + swapiProperties.endpoints().planets();
         people = SwapiApiUtil.fetchPeople(restTemplate, peopleUrl);

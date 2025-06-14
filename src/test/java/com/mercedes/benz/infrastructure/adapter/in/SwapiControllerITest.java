@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,8 +40,22 @@ public class SwapiControllerITest {
     private List<Person> people;
     private List<Planet> planets;
 
+    @Value("${rest.base-url}")
+    private String restBaseUrl;
+
+    @Value("${rest.endpoints.people}")
+    private String restEndpointPeople;
+
+    @Value("${rest.endpoints.planets}")
+    private String restEndpointPlanets;
+
+    private String restUrlPeople;
+    private String restUrlPlanets;
+
     @BeforeEach
     void setUp() {
+        restUrlPeople = restBaseUrl + restEndpointPeople;
+        restUrlPlanets = restBaseUrl + restEndpointPlanets;
         people = List.of(
                 new Person("Luke Skywalker", "172", "77", "blond", "fair", "blue", "19BBY", "male", "Tatooine", "2014-12-09"),
                 new Person("Leia Organa", "150", "49", "brown", "light", "brown", "19BBY", "female", "Alderaan", "2014-12-09")
@@ -56,7 +71,7 @@ public class SwapiControllerITest {
     void shouldReturnAllPeople() throws Exception {
         when(peopleDataSource.getPeopleFromSource(any())).thenReturn(people);
 
-        mockMvc.perform(get("/api/swapi/people"))
+        mockMvc.perform(get(restUrlPeople))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("Luke Skywalker"));
@@ -73,7 +88,7 @@ public class SwapiControllerITest {
     void shouldReturnFilteredPeople() throws Exception {
         when(peopleDataSource.getPeopleFromSource(any())).thenReturn(List.of(people.get(0)));
 
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("filterField", "name")
                         .param("filterValue", "Luke Skywalker")
                         .param("filterType", "EQUALS"))
@@ -93,7 +108,7 @@ public class SwapiControllerITest {
     void shouldReturnSortedPeopleDescending() throws Exception {
         when(peopleDataSource.getPeopleFromSource(any())).thenReturn(people);
 
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("sortField", "name")
                         .param("descending", "true"))
                 .andExpect(status().isOk())
@@ -110,7 +125,7 @@ public class SwapiControllerITest {
     void shouldReturnPaginatedPeople() throws Exception {
         when(peopleDataSource.getPeopleFromSource(any())).thenReturn(List.of(people.get(0)));
 
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("offset", "0")
                         .param("limit", "1"))
                 .andExpect(status().isOk())
@@ -127,7 +142,7 @@ public class SwapiControllerITest {
     void shouldReturnAllPlanets() throws Exception {
         when(planetsDataSource.getPlanetsFromSource(any())).thenReturn(planets);
 
-        mockMvc.perform(get("/api/swapi/planets"))
+        mockMvc.perform(get(restUrlPlanets))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].name").value("Tatooine"));
@@ -144,7 +159,7 @@ public class SwapiControllerITest {
     void shouldReturnFilteredPlanets() throws Exception {
         when(planetsDataSource.getPlanetsFromSource(any())).thenReturn(List.of(planets.get(0)));
 
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("filterField", "name")
                         .param("filterValue", "Tatooine")
                         .param("filterType", "EQUALS"))
@@ -164,7 +179,7 @@ public class SwapiControllerITest {
     void shouldReturnSortedPlanetsDescending() throws Exception {
         when(planetsDataSource.getPlanetsFromSource(any())).thenReturn(planets);
 
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("sortField", "name")
                         .param("descending", "true"))
                 .andExpect(status().isOk())
@@ -181,7 +196,7 @@ public class SwapiControllerITest {
     void shouldReturnPaginatedPlanets() throws Exception {
         when(planetsDataSource.getPlanetsFromSource(any())).thenReturn(List.of(planets.get(0)));
 
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("offset", "0")
                         .param("limit", "1"))
                 .andExpect(status().isOk())
@@ -196,14 +211,14 @@ public class SwapiControllerITest {
 
     @Test
     void shouldReturnValidationErrorForNegativeOffsetPeople() throws Exception {
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("offset", "-1"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidFilterTypePeople() throws Exception {
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("filterField", "name")
                         .param("filterValue", "Tatooine")
                         .param("filterType", "UNKNOWN"))
@@ -212,7 +227,7 @@ public class SwapiControllerITest {
 
     @Test
     void shouldReturnValidationErrorForInvalidOrderPeople() throws Exception {
-        mockMvc.perform(get("/api/swapi/people")
+        mockMvc.perform(get(restUrlPeople)
                         .param("sortField", "name")
                         .param("descending", "UNKOWN"))
                 .andExpect(status().isBadRequest());
@@ -220,14 +235,14 @@ public class SwapiControllerITest {
 
     @Test
     void shouldReturnValidationErrorForNegativeOffsetPlanets() throws Exception {
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("offset", "-1"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void shouldReturnValidationErrorForInvalidFilterTypePlanets() throws Exception {
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("filterField", "name")
                         .param("filterValue", "Tatooine")
                         .param("filterType", "UNKNOWN"))
@@ -236,7 +251,7 @@ public class SwapiControllerITest {
 
     @Test
     void shouldReturnValidationErrorForInvalidOrderPlanets() throws Exception {
-        mockMvc.perform(get("/api/swapi/planets")
+        mockMvc.perform(get(restUrlPlanets)
                         .param("sortField", "name")
                         .param("descending", "UNKOWN"))
                 .andExpect(status().isBadRequest());

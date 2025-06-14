@@ -1,9 +1,14 @@
 swapi:
   base-url: https://swapi.py4e.com/api
   endpoints:
-    people: /people/
-    planets: /planets/
+    people: /people
+    planets: /planets
 cache:
   cron: 0 0 * * * *
+rest:
+  base-url: /api/swapi
+  endpoints:
+    people: /people
+    planets: /planets
 
 

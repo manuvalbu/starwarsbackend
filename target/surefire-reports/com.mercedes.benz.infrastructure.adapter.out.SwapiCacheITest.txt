@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mercedes.benz.infrastructure.adapter.out.SwapiCacheITest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.35 s -- in com.mercedes.benz.infrastructure.adapter.out.SwapiCacheITest

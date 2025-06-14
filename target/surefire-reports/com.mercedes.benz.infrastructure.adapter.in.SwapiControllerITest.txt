@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mercedes.benz.infrastructure.adapter.in.SwapiControllerITest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.18 s -- in com.mercedes.benz.infrastructure.adapter.in.SwapiControllerITest

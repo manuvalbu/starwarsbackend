@@ -1,0 +1,8 @@
+com\mercedes\benz\domain\model\PersonTest.class
+com\mercedes\benz\domain\model\PlanetTest.class
+com\mercedes\benz\SwapiApplicationE2ETest.class
+com\mercedes\benz\application\PeopleServiceTest.class
+com\mercedes\benz\infrastructure\adapter\out\SwapiCacheITest.class
+com\mercedes\benz\application\PlanetsServiceTest.class
+com\mercedes\benz\SwapiApplicationE2ETest$1.class
+com\mercedes\benz\infrastructure\adapter\in\SwapiControllerITest.class

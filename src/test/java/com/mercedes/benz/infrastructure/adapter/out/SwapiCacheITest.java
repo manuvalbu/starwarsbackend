@@ -4,7 +4,6 @@ import com.mercedes.benz.domain.model.Person;
 import com.mercedes.benz.domain.model.Planet;
 import com.mercedes.benz.domain.vo.PageRequest;
 import com.mercedes.benz.domain.vo.Query;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,11 +19,6 @@ public class SwapiCacheITest {
 
     @Autowired
     private SwapiCacheAdapter adapter;
-
-    @BeforeEach
-    void setup() {
-        adapter.loadDataFromSwapi();
-    }
 
     @Test
     void shouldLoadPeopleAndFilterWithQuery() {
@@ -65,8 +59,22 @@ public class SwapiCacheITest {
     @Test
     void shouldHaveCachedDataAfterLoading() {
         List<Person> people = adapter.getPeople();
+        List<Planet> planets = adapter.getPlanets();
         assertNotNull(people);
+        assertNotNull(planets);
         assertFalse(people.isEmpty(), "People list should not be empty after loading");
+        assertFalse(planets.isEmpty(), "Planets list should not be empty after loading");
+    }
+
+    @Test
+    void shouldInvokeScheduledMethodAtLeastTwice() throws InterruptedException {
+        int initialCount = adapter.getExecutionCount();
+
+        Thread.sleep(5000);
+
+        int finalCount = adapter.getExecutionCount();
+        assertTrue(finalCount - initialCount >= 2,
+                "Expected scheduled method to be called at least twice, but was called " + (finalCount - initialCount));
     }
 }
 

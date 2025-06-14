@@ -1,11 +1,9 @@
 package com.mercedes.benz.infrastructure.utils;
 
 import com.mercedes.benz.infrastructure.adapter.in.model.FilterType;
-
 import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.function.Predicate;
-
 
 public class QueryBuilder {
 
@@ -38,14 +36,12 @@ public class QueryBuilder {
         };
     }
 
-
-
     public static <T> Comparator<T> createComparator(String field, boolean descending) {
         Comparator<T> comparator = Comparator.comparing(t -> {
             try {
                 Field f = t.getClass().getDeclaredField(field);
                 f.setAccessible(true);
-                return (Comparable<Object>) f.get(t); // Explicit cast here
+                return (Comparable<Object>) f.get(t);
             } catch (Exception e) {
                 throw new RuntimeException("Failed to create comparator for field: " + field, e);
             }
@@ -53,5 +49,4 @@ public class QueryBuilder {
 
         return descending ? comparator.reversed() : comparator;
     }
-
 }

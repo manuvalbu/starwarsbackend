@@ -88,5 +88,4 @@ public class SwapiApiUtil {
 
         return planets;
     }
-
 }
