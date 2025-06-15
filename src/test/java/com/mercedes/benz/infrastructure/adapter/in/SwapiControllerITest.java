@@ -49,6 +49,9 @@ public class SwapiControllerITest {
     @Value("${rest.endpoints.planets}")
     private String restEndpointPlanets;
 
+    @Value("${rest.pagination.default-limit}")
+    private int paginationLimit;
+
     private String restUrlPeople;
     private String restUrlPlanets;
 
@@ -81,7 +84,7 @@ public class SwapiControllerITest {
 
         Query<Person> query = captor.getValue();
         assertThat(query.page().offset()).isEqualTo(0);
-        assertThat(query.page().limit()).isEqualTo(10);
+        assertThat(query.page().limit()).isEqualTo(paginationLimit);
     }
 
     @Test
@@ -152,7 +155,7 @@ public class SwapiControllerITest {
 
         Query<Planet> query = captor.getValue();
         assertThat(query.page().offset()).isEqualTo(0);
-        assertThat(query.page().limit()).isEqualTo(10);
+        assertThat(query.page().limit()).isEqualTo(paginationLimit);
     }
 
     @Test

@@ -11,6 +11,8 @@ import com.mercedes.benz.infrastructure.utils.QueryBuilder;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import java.util.function.Predicate;
 @Validated
 @Tag(name = "Swapi API", description = "Operations related to Star Wars People and Planets")
 public class SwapiController {
+    private static final Logger log = LoggerFactory.getLogger(SwapiController.class);
 
     private final PeopleService peopleService;
     private final PlanetsService planetsService;
@@ -59,10 +62,13 @@ public class SwapiController {
             @Min(0)
             @Parameter(description = "Pagination offset") int offset,
 
-            @RequestParam(defaultValue = "10")
+            @RequestParam(defaultValue = "${rest.pagination.default-limit}")
             @Min(1)
             @Parameter(description = "Pagination limit") int limit
     ) {
+        log.info("Received request for people with params: filterField: {}, filterValue: {}, filterType: {}, caseSensitive: {}, sortField: {}, descending: {}, offset: {}, limit: {}",
+                filterField, filterValue, filterType, caseSensitive, sortField, descending, offset, limit);
+
         Predicate<Person> filter = (filterField != null && filterValue != null)
                 ? QueryBuilder.createPredicate(filterField, filterValue, filterType, caseSensitive)
                 : person -> true;
@@ -99,10 +105,13 @@ public class SwapiController {
             @Min(0)
             @Parameter(description = "Pagination offset") int offset,
 
-            @RequestParam(defaultValue = "10")
+            @RequestParam(defaultValue = "${rest.pagination.default-limit}")
             @Min(1)
             @Parameter(description = "Pagination limit") int limit
     ) {
+        log.info("Received request for planets with params: filterField: {}, filterValue: {}, filterType: {}, caseSensitive: {}, sortField: {}, descending: {}, offset: {}, limit: {}",
+                filterField, filterValue, filterType, caseSensitive, sortField, descending, offset, limit);
+
         Predicate<Planet> filter = (filterField != null && filterValue != null)
                 ? QueryBuilder.createPredicate(filterField, filterValue, filterType, caseSensitive)
                 : planet -> true;

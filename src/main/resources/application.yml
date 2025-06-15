@@ -5,10 +5,20 @@ swapi:
     planets: /planets
 cache:
   cron: 0 0 * * * *
+
 rest:
   base-url: /api/swapi
   endpoints:
     people: /people
     planets: /planets
+  pagination:
+    default-limit: 500
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: DEBUG
 
 

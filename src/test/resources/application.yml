@@ -5,8 +5,11 @@ swapi:
     planets: /planets
 cache:
   cron: "*/2 * * * * *"
+
 rest:
   base-url: /api/swapi
   endpoints:
     people: /people
     planets: /planets
+  pagination:
+    default-limit: 500
