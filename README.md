@@ -102,7 +102,6 @@ The application uses a scheduled job to periodically refresh data from the SWAPI
 
 - Unit tests using JUnit & Mockito
 - Integration tests with MockMvc
-- Scheduled task test with `Thread.sleep` verification
 - End-to-end tests
 
 Run tests:
@@ -130,3 +129,21 @@ Run tests:
 │   └── config, utils
 ```
 
+## Using Docker Compose for Frontend and Backend
+
+This project includes a `docker-compose.yml` file for the **backend** Java app that launches both the frontend and the backend services. For this setup to work properly, **both projects (frontend and backend) should be organized as sibling folders at the same directory level** on your filesystem.
+
+- **The frontend provides a similar docker-compose file as well. It’s not necessary to run both docker-compose setups; running one of them will launch both frontend and backend.**
+
+### Running the containers
+
+To start both the frontend and backend containers, open a terminal and run the following command **from within the `starwarsbackend` folder**:
+```bash
+docker-compose up
+```
+This will build both images and start the containers.
+
+To stop the containers, press Ctrl + C and then run:
+```bash
+docker-compose down
+```
